@@ -5,18 +5,20 @@ PO: Laurent Droudun
 
 ## Fonctionnalités attendues
 
-- 
+- Détecter les balles sur le terrain
+- S'orienter vers les zones de dépôts
 
 
 ## Tâches à réaliser
 
-- Avoir un prototype du robot
+- Concevoir un prototype du robot
 - Architecture C2
-- Valider le modèle du robot
-- Utiliser la caméra pour détecter les balles sur le terrain
+- Récolter les données de la caméra
+- Utiliser la caméra pour détecter les balles et le robot sur le terrain
 - Algorithme de trajectoire pour aller déposer les balles
+- Valider le modèle du robot
 
 ## Challenges techniques
 
-- 
-
+- Déterminer la stratégie de circuit pour aller déposer les balles en maximisant les points
+- S'adapter à la texture du terrain
