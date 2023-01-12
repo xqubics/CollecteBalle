@@ -1,7 +1,6 @@
-# Debrief du xx/xx/xxxx
+# Debrief du 12/01/2023
 
-PO: ...
-
+PO: Laurent Droudun
 
 ## Bilan
 
