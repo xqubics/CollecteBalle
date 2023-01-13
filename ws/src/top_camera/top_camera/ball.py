@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 
 
 class Ball:
+
     def __init__(self, timeStamp, position, id):
         """
             timeStamp: time of creation
@@ -12,6 +13,8 @@ class Ball:
             id: ball's unique id
         """
         self.time = timeStamp
+        self.time0 = timeStamp
+        self.elapsedTime = self.time - self.time0
         self._score = 0
         self.position = position
         self.id = id
@@ -53,8 +56,8 @@ class TerrainBalls:
         self.balls = []
         # self.score_history = np.empty((0, 2), float)  #  <= for score testing
         rclpy.init()
+
         self.Camera = ZenithCameraSubscriber(self.update)
-        # rclpy.spin_once(self.Camera)
         rclpy.spin(self.Camera)
 
     def detect_balls(self):
@@ -68,12 +71,19 @@ class TerrainBalls:
             (cx, cy), radius = cv.minEnclosingCircle(cnt)
             ball_centers.append([int(cx), int(cy)])
             cv.drawContours(self.terrain, [cnt], 0, (0, 0, 255), -1)
-        for i in range(len(ball_centers)):
-            b = Ball(self.time, ball_centers[i], i)
-            self.balls.append(b)
-            cv2.putText(self.terrain, str(b.get_score(currentTimeStamp=self.time)), tuple(b.position), cv2.FONT_HERSHEY_SIMPLEX,
-                        1, (255, 255, 0), 1, cv2.LINE_AA)
 
+        if len(self.balls)==0:
+            for i in range(len(ball_centers)):
+                b=Ball(self.time,ball_centers[i],i)
+                self.balls.append(b)
+        else:
+            for i in range(len(ball_centers)):
+                b=Ball(self.time,ball_centers[i],i)
+                self.findMatch(b)
+        for b in self.balls:
+            cv2.putText(self.terrain, str(b.position), tuple(b.position), cv2.FONT_HERSHEY_SIMPLEX,
+            1, (255,255,0), 1, cv2.LINE_AA)
+            
             # for score testing:
             if i == 0:
                 self.score_history = np.vstack([
@@ -95,6 +105,19 @@ class TerrainBalls:
         plt.pause(0.01)
         # ----------
 
+    def findMatch(self,ball):
+        match=False
+        ball_positions=np.zeros((2,len(self.balls)))
+        for i in range(len(self.balls)):
+            ball_positions[:,i]=np.array([*self.balls[i].position])
+        ball_distances=np.linalg.norm(ball_positions.T-ball.position,axis=1)
+        closest_ball=np.argmin(ball_distances)
+        threshold=35
+        if ball_distances[closest_ball]<threshold:
+            self.balls[closest_ball]=ball
+        else:
+            self.balls.append(ball)
+        return match
 
     def show_balls(self):
         cv.imshow('Terrain', self.terrain)
@@ -113,5 +136,4 @@ class TerrainBalls:
 
 
 t = TerrainBalls(0)
-
 t.Camera.destroy_node()
