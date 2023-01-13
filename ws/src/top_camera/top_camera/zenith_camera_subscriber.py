@@ -7,7 +7,7 @@ import cv2 # OpenCV library
  
 class ZenithCameraSubscriber(Node):
   """
-  Create an ImageSubscriber class, which is a subclass of the Node class.
+  Create an ZenithCameraSubscriber class, which is a subclass of the Node class.
   """
   def __init__(self,picture_received_callback):
     """
