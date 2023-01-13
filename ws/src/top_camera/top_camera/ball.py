@@ -34,7 +34,7 @@ class TerrainBalls:
         for i in range(len(ball_centers)):
             b=Ball(self.time,ball_centers[i],i)
             self.balls.append(b)
-            cv2.putText(self.terrain, str(b.id), tuple(b.position), cv2.FONT_HERSHEY_SIMPLEX,
+            cv2.putText(self.terrain, str(b.time), tuple(b.position), cv2.FONT_HERSHEY_SIMPLEX,
             1, (255,255,0), 1, cv2.LINE_AA)
             # self.isolatedBalls=img
     
