@@ -65,7 +65,7 @@ def click_event(event, x, y, flags, params):
 
 # driver function
 if __name__ == "__main__":
-    img = cv2.imread('terrain_1.png', 1)
+    img = cv2.imread('top_camera/terrain_1.png', 1)
     cv2.imshow('image', img)
     cv2.setMouseCallback('image', click_event)
     cv2.waitKey(0)
