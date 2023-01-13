@@ -4,7 +4,7 @@ PO: Laurent Droudun
 
 ## Bilan
 
-Pourcentage de tâches réalisées: ... %
+Pourcentage de tâches réalisées: 45%
 
 ### Ce qui a fonctionné
 

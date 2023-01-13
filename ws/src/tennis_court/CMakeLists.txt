@@ -43,13 +43,32 @@ link_directories(${GAZEBO_LIBRARY_DIRS} ${gazebo_dev_LIBRARY_DIRS} ${gazebo_ros_
 
 add_library(gui_tennis_court_overlay SHARED ${headers_MOC} src/GUITennisCourtOverlay.cc)
 rosidl_target_interfaces(gui_tennis_court_overlay ${PROJECT_NAME} "rosidl_typesupport_cpp")
-target_link_libraries(gui_tennis_court_overlay ${GAZEBO_LIBRARIES}
+
+ament_target_dependencies(gui_tennis_court_overlay
+  rclcpp
+  gazebo_ros
+  gazebo_dev
+  gazebo_msgs
+  std_msgs
+  Qt5Widgets
+  Qt5Core
+  Qt5Test
+  Protobuf
+  gazebo
+  rosidl_default_generators
+  rmw_implementation_cmake
+)
+
+target_link_libraries(gui_tennis_court_overlay 
+  ${GAZEBO_LIBRARIES}
   ${gazebo_ros_LIBRARIES}
   ${gazebo_dev_LIBRARIES}
   ${Qt5Core_LIBRARIES}
   ${Qt5Widgets_LIBRARIES}
   ${PROTOBUF_LIBRARIES}
-  ${Qt5Test_LIBRARIES})
+  ${Qt5Test_LIBRARIES}
+)
+
 ament_export_libraries(gui_tennis_court_overlay)
 
 if(BUILD_TESTING)
@@ -57,7 +76,7 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_python_install_package(scripts/)
+ament_python_install_package(scripts)
 
 ament_package()
 
