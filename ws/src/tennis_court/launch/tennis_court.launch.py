@@ -1,10 +1,10 @@
 import os
 
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, ExecuteProcess
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import Command, LaunchConfiguration
 from ament_index_python import get_package_share_directory
 from launch_ros.actions import Node
 
@@ -18,6 +18,9 @@ def generate_launch_description():
     executable = "executable" if ROS_DISTRO == ROS_DISTRO_FOXY else "node_executable"
     pkg_share = get_package_share_directory("tennis_court")
     gazebo_ros_share = get_package_share_directory("gazebo_ros")
+    model_path = os.path.join(pkg_share, 'urdf/fledj_bot_description.urdf')
+    world_path = os.path.join(pkg_share, 'worlds/court.world')
+
 
     # Gazebo Server
     gzserver_launch_file = os.path.join(gazebo_ros_share, "launch", "gzserver.launch.py")
@@ -64,14 +67,31 @@ def generate_launch_description():
         **{executable: "rviz2"}
     )
 
+    robot_state_publisher_node = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        parameters=[{'robot_description': Command(['xacro ', LaunchConfiguration('model')])}]
+    )
+
+    spawn_entity = Node(
+        package='gazebo_ros', 
+        executable='spawn_entity.py',
+        arguments=['-entity', 'fledj_bot', '-topic', 'robot_description'],
+        output='screen'
+    )
+
     return LaunchDescription([
         DeclareLaunchArgument(name="gui", default_value="true"),
         DeclareLaunchArgument(name="paused", default_value="false"),
         DeclareLaunchArgument(name="rviz", default_value="false"),
         DeclareLaunchArgument(name="manager", default_value="true"),
+        DeclareLaunchArgument(name='model', default_value=model_path),
+        ExecuteProcess(cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so', world_path], output='screen'),
         gzserver_launch,
         gzclient_launch,
         static_tf_node,
         ball_manager_node,
-        rviz_node
+        rviz_node,
+        robot_state_publisher_node,
+        spawn_entity
     ])
