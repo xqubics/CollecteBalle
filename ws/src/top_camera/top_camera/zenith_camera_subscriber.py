@@ -9,7 +9,7 @@ class ZenithCameraSubscriber(Node):
   """
   Create an ImageSubscriber class, which is a subclass of the Node class.
   """
-  def __init__(self):
+  def __init__(self,picture_received_callback):
     """
     Class constructor to set up the node
     """
@@ -24,7 +24,7 @@ class ZenithCameraSubscriber(Node):
       self.listener_callback, 
       10)
     self.subscription # prevent unused variable warning
-      
+    self.picture_received_callback=picture_received_callback
     # Used to convert between ROS and OpenCV images
     self.br = CvBridge()
    
@@ -33,15 +33,17 @@ class ZenithCameraSubscriber(Node):
     Callback function.
     """
     # Display the message on the console
-    self.get_logger().info('Receiving video frame')
+    # self.get_logger().info('Receiving video frame')
  
     # Convert ROS Image message to OpenCV image
     current_frame = self.br.imgmsg_to_cv2(data,desired_encoding='bgr8')
     
     # Display image
-    cv2.imshow("camera", current_frame)
+    # cv2.imshow("camera", current_frame)
+    # self.picture_received_callback(current_frame,data.header.stamp)
+    self.picture_received_callback(current_frame,1)
     
-    cv2.waitKey(1)
+    # cv2.waitKey(1)
   
 def main(args=None):
   

@@ -63,8 +63,6 @@ def click_event(event, x, y, flags, params):
         path_planner(x,y,img)
         cv2.imshow('image', img)
 
-
-
 # driver function
 if __name__ == "__main__":
     img = cv2.imread('terrain_1.png', 1)
