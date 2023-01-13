@@ -14,7 +14,9 @@ Ceci est un template de dépôt Git pour le cours d'ingénierie système et mod�
 
 ###### A compléter avec la/les commande(s) à lancer.
 ```bash
-# TODO
+    colcon build
+    source ./install/setup.sh
+    ros2 launch tennis_court tennis_court.launch.py
 ```
 
 
@@ -22,12 +24,15 @@ Ceci est un template de dépôt Git pour le cours d'ingénierie système et mod�
 
 ### Membres
 
-###### A compléter avec les membres du groupe.
-
+- Florian
+- Laurent
+- Ermance
+- Danut
+- Jakub
 
 ### Gestion de projet
 
-###### A compléter avec le lien vers votre [Taiga](https://taiga.io).
+- [Taiga](https://tree.taiga.io/project/xqubics-fledj-inge/)
 
 
 
@@ -37,10 +42,14 @@ Ce dépôt doit être cloné dans le dossier `src` d'un workspace ROS 2.
 
 ### Package `tennis_court`
 
-Le dossier `tennis_court` est un package ROS contenant le monde dans lequel le robot ramasseur de balle devra évoluer ainsi qu'un script permettant de faire apparaître des balles dans la simulation.
+Le dossier `src/tennis_court` est un package ROS contenant le monde dans lequel le robot ramasseur de balle devra évoluer ainsi qu'un script permettant de faire apparaître des balles dans la simulation.
 Ce package ne doit pas être modifié.
 Consulter le [README](tennis_court/README.md) du package pour plus d'informations.
 
+### Package `top_camera`
+
+Le dossier `src/top_camera` est un package ROS contenant le processing des données de la `zenith_camera` - la caméra placée au dessus du terrain de tennis.
+Ce package provide des positions de balle et de robot.
 
 ### Documents
 
