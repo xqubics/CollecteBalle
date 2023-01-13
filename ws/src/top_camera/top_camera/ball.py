@@ -1,6 +1,7 @@
 import cv2 as cv
 import numpy as np
 from zenith_camera_subscriber import *
+from matplotlib import pyplot as plt
 
 
 class Ball:
@@ -15,18 +16,31 @@ class Ball:
         self.position = position
         self.id = id
 
-    def get_score(self, robotPosition = (0, 0)):
+    def get_score(self, robotPosition=(0, 0), currentTimeStamp=0):
         """
             Closer the ball is to the robot, higher the score
 
             Input:
                 robotPosition: (x, y) tuple [in pixels, relative to the top left corner of the image]
+                currentTimeStamp: timestamp of the current frame
 
             Output:
                 score: float
         """
-        distance = np.linalg.norm( np.array(self.position) - np.array(robotPosition) )
-        self._score = 1 / distance
+        distance_coeff = 1
+        time_coeff = 10
+
+        # print( "time: ", currentTimeStamp, "self.time: ", self.time )
+
+        time_diff = np.abs(currentTimeStamp - self.time)
+        distance = np.linalg.norm(
+            np.array(self.position) - np.array(robotPosition)
+        )
+
+        self._score = 1 / (distance_coeff * distance + time_coeff * time_diff)
+
+        # print("distance: ", distance, "time_diff: ",
+        #       time_diff, "score: ", self._score)
 
         return self._score
 
@@ -37,6 +51,7 @@ class TerrainBalls:
         self.score = 0
         self.terrain = None
         self.balls = []
+        # self.score_history = np.empty((0, 2), float)  #  <= for score testing
         rclpy.init()
         self.Camera = ZenithCameraSubscriber(self.update)
         # rclpy.spin_once(self.Camera)
@@ -56,9 +71,30 @@ class TerrainBalls:
         for i in range(len(ball_centers)):
             b = Ball(self.time, ball_centers[i], i)
             self.balls.append(b)
-            cv2.putText(self.terrain, str(b.get_score()), tuple(b.position), cv2.FONT_HERSHEY_SIMPLEX,
+            cv2.putText(self.terrain, str(b.get_score(currentTimeStamp=self.time)), tuple(b.position), cv2.FONT_HERSHEY_SIMPLEX,
                         1, (255, 255, 0), 1, cv2.LINE_AA)
+
+            # for score testing:
+            if i == 0:
+                self.score_history = np.vstack([
+                    self.score_history,
+                    np.array([
+                        self.time,
+                        b.get_score(currentTimeStamp=self.time)
+                    ])
+                ])
+            # ----------
             # self.isolatedBalls=img
+
+        # for score testing:
+        plt.cla()
+        # print('score_history', self.score_history[:])
+
+        plt.plot(self.score_history[:, 0], self.score_history[:, 1])
+        plt.draw()
+        plt.pause(0.01)
+        # ----------
+
 
     def show_balls(self):
         cv.imshow('Terrain', self.terrain)
