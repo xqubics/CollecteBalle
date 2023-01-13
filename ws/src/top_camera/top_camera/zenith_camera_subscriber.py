@@ -37,11 +37,7 @@ class ZenithCameraSubscriber(Node):
  
     # Convert ROS Image message to OpenCV image
     current_frame = self.br.imgmsg_to_cv2(data,desired_encoding='bgr8')
-    
-    # Display image
-    # cv2.imshow("camera", current_frame)
-    # self.picture_received_callback(current_frame,data.header.stamp)
-    self.picture_received_callback(current_frame,1)
+    self.picture_received_callback(current_frame,data.header.stamp.nanosec/10**9 + data.header.stamp.sec)
     
     # cv2.waitKey(1)
   
