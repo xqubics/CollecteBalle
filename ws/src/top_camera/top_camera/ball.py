@@ -7,9 +7,6 @@ class ball:
         self.score=0
         self.position=X
 
-    def update():
-        pass
-
 class terrainBalls:
     def __init__(self,timeStamp,img):
         # self.position=position
@@ -34,8 +31,8 @@ class terrainBalls:
         for i in range(len(ball_centers)):
             t=42
             b=ball(t,ball_centers[i])
-            self.balls.append()
-        # self.isolatedBalls=img
+            self.balls.append(b)
+            # self.isolatedBalls=img
     
     def update():
         pass
