@@ -10,7 +10,7 @@
   <xacro:property name="pickside_length" value="0.25"/>
   <xacro:property name="pickside_height" value="0.12"/>
 
-  <xacro:property name="pickback_width" value="0.50"/>
+  <xacro:property name="pickback_width" value="0.45"/>
   <xacro:property name="pickback_length" value="0.050"/>
   <xacro:property name="pickback_height" value="0.12"/>
 
@@ -167,7 +167,7 @@
   <joint name="${prefix}_joint" type="fixed">
     <parent link="base_link"/>
     <child link="${prefix}_link"/>
-    <origin xyz="${-x_reflect*(base_length/2+pickback_length)} ${y_reflect*(pickback_width/2+pickside_ygap)} ${pick_zoff}" rpy="0 0 0"/>
+    <origin xyz="${-x_reflect*(base_length/2+pickback_length+pickside_length/2)} ${y_reflect*(pickback_width/2+pickside_ygap)} ${pick_zoff}" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
   </joint>
   </xacro:macro>
@@ -199,7 +199,7 @@
   <joint name="pickback_joint" type="fixed">
   	<parent link="base_link"/>
   	<child link="pickback"/>
-  	<origin xyz="${base_length/2} 0 ${pick_zoff}" rpy="0 0 0"/>
+  	<origin xyz="${base_length/2+pickback_length/2} 0 ${pick_zoff}" rpy="0 0 0"/>
   	<axis xyz="0 1 0"/>
   </joint>
 
