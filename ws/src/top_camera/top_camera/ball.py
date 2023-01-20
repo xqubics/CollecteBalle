@@ -81,7 +81,7 @@ class TerrainBalls:
             cv2.putText(self.terrain, str(b.id), tuple(b.position), cv2.FONT_HERSHEY_SIMPLEX,
                         1, (255, 255, 0), 1, cv2.LINE_AA)
 
-            #  for score testing:
+            #  for score testing:
             # if i == 0:
             #     self.score_history = np.vstack([
             #         self.score_history,
@@ -90,16 +90,16 @@ class TerrainBalls:
             #             b.get_score(currentTimeStamp=self.time)
             #         ])
             #     ])
-            #  ----------
+            #  ----------
 
-        #  for score testing:
+        #  for score testing:
         # plt.cla()
         # # print('score_history', self.score_history[:])
 
         # plt.plot(self.score_history[:, 0], self.score_history[:, 1])
         # plt.draw()
         # plt.pause(0.01)
-        #  ----------
+        #  ----------
 
     def find_match(self, ball, ball_centers):
 
