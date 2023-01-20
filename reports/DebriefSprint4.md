@@ -31,4 +31,18 @@ Préparer les tâches d'avance et bien pense à la difficulté (temps de réalis
 
 ## Nouvelles mesures
 
-À mettre à jour aprés le RDV client.
+### Tâches à réaliser:
+- Améliorer la vitesse u robot ( Ajouter un bouton "vitesse boost" ? )
+- Fixer path planning algo - demi plans bug
+- Détection de balles: Gérer disparassion de balles - Qu'est-ce qu'on fait quand on ne voit plus la balle ?
+- Proposer un nouveu nom pour le robot
+- Quelle est la valeur de *Garde au sol* du notre robot ?
+
+### Nouvelles demandes de client:
+- **Code style uniforme** (Linting) <span class="color: red">[important]</span>
+- CI en utilisant **Github Actions** ... PO peut faire ça <span class="color: red">[important]</span>
+
+- À implementer plus tart (pas nécessaire dans le sprint 5):
+    - Ajouter des tests unitires  ... à venir plus tard
+        - tip: Gtest (Google Test), PyTest
+
