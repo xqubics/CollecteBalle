@@ -49,6 +49,7 @@
     </inertial>
   </xacro:macro>
   
+
   <!-- Robot Base -->
   <link name="base_link">
     <visual>
@@ -69,6 +70,7 @@
     <xacro:box_inertia m="10" w="${base_width}" d="${base_length}" h="${base_height}"/>
   </link>
   
+
    <!-- Robot Footprint -->
   <link name="base_footprint">
   	<xacro:box_inertia m="0" w="0" d="0" h="0"/>
@@ -82,6 +84,7 @@
 
   <gazebo reference="base_link">
     <material>Gazebo/Red</material>
+    <mass value="10"/>
   </gazebo>
 
 
@@ -136,10 +139,13 @@
 
   <gazebo reference="drivewhl_l_link">
     <material>Gazebo/Green</material>
-  </gazebo>
+    <mass value="2"/>
+</gazebo>
   <gazebo reference="drivewhl_r_link">
     <material>Gazebo/Green</material>
+    <mass value="2"/>
   </gazebo>
+
 
   <link name="front_caster">
     <visual>
@@ -184,6 +190,7 @@
 
   <gazebo reference="front_caster">
     <material>Gazebo/Green</material>
+    <mass value="1"/>
   </gazebo>
 
 
@@ -223,6 +230,7 @@
 
   <gazebo reference="pickside_l_link">
     <material>Gazebo/Black</material>
+    <mass value="0.5"/>
   </gazebo>
   <gazebo reference="pickside_r_link">
     <material>Gazebo/Black</material>
@@ -258,6 +266,7 @@
 
   <gazebo reference="pickback">
     <material>Gazebo/Black</material>
+    <mass value="0.5"/>
   </gazebo>
 
 
