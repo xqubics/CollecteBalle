@@ -8,12 +8,8 @@ Pourcentage de tâches réalisées: 60%
 
 ### Ce qui a fonctionné
 
-<<<<<<< HEAD
 Les données renvoyés par la caméra ont pu être récoltées. Nous avons décidé d'un modèle de robot adapté à la sécurité de l'utilisateur.
-
-=======
 Choix d'un prototype de robot adapté. Récupération des données par la caméra et détection des balles. Stratégie de récupération de balles.
->>>>>>> c9a8e3b09d5af240af968e2d2d59726927f8988d
 
 ### Ce qui n'a pas fonctionné
 
