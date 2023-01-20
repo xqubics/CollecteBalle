@@ -13,6 +13,7 @@ passage1=np.array([0,4.5])
 passage2=np.array([0,-4.5])
 colect1=np.array([-9.19407895,-4.55592105])
 colect2=np.array([9.14473684,4.6875])
+path=[]
 
 #################Parameters#################
 
@@ -30,13 +31,13 @@ def xy_to_pixel(x,y,img_shape):
 def path_planner(x,y,img,click2,i):
     X=(x,y)
     n,p,_=img.shape
-    print(i)
     if x>0:
         x,y=xy_to_pixel(x,y,img.shape)
         if (i==0) :
+            path.append(colect2.tolist())
             x0,y0=xy_to_pixel(*colect2,img.shape)
-        if (sign(pixel_to_xy(click2[0],click2[1],img.shape)[0])!=sign(pixel_to_xy(click1[0],click1[1],img.shape)[0])) :
-            
+        # if (sign(pixel_to_xy(click2[0],click2[1],img.shape)[0])!=sign(pixel_to_xy(click1[0],click1[1],img.shape)[0])) :
+
         else :
             x0,y0=click2[0],click2[1]
         cv2.line(img, (x0,y0),(x,y), (255,0,0), 2)
@@ -44,13 +45,16 @@ def path_planner(x,y,img,click2,i):
     else:
         x,y=xy_to_pixel(x,y,img.shape)
         if (i==0) :
+            path.append(colect1.tolist())
             x0,y0=xy_to_pixel(*colect1,img.shape)
         else :
             x0,y0 = click2[0],click2[1]
         # x0,y0=int(colect1[0]/scale+p/2),int(colect1[1]/scale+n/2)
         cv2.line(img, (x0,y0),(x,y), (255,0,0), 2)
         # return colect1
-    print(pixel_to_xy(x0,y0,img.shape))
+    path.append(pixel_to_xy(x,y,img.shape).tolist())
+    print(path)
+    # print(pixel_to_xy(x,y,img.shape))
 
 def click_event(event, x, y, flags, params):
     global i,click1,click2
@@ -76,7 +80,7 @@ def click_event(event, x, y, flags, params):
 
 # driver function
 if __name__ == "__main__":
-    img = cv2.imread('top_camera/terrain_1.png', 1)
+    img = cv2.imread('terrain_1.png', 1)
     cv2.imshow('image', img)
     cv2.setMouseCallback('image', click_event)
     cv2.waitKey(0)
