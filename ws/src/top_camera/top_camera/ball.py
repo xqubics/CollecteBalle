@@ -50,6 +50,7 @@ class TerrainBalls:
         self.nb_balls = 0
         rclpy.init()
         self.Camera = ZenithCameraSubscriber(self.update)
+        self.path_=Path_Planner(self.terrain)
         rclpy.spin(self.Camera)
 
     def detect_balls(self):
@@ -72,14 +73,18 @@ class TerrainBalls:
                 ball_centers.pop(k)
         if self.nb_balls < n:
             for j in range(len(ball_centers)):
+                self.path_.path_planner(self.path_.pixel_to_xy(ball_centers[j][0],ball_centers[j][1])[0],
+                        self.path_.pixel_to_xy(ball_centers[j][0],ball_centers[j][1])[1])
                 # print('new_ball')
                 self.nb_balls = self.nb_balls+1
                 self.balls.append(
                     Ball(self.nb_balls, self.time, ball_centers[j]))
         for b in self.balls:
             b.set_time(self.time)
-            cv2.putText(self.terrain, str(b.id), tuple(b.position), cv2.FONT_HERSHEY_SIMPLEX,
-                        1, (255, 255, 0), 1, cv2.LINE_AA)
+            # print(self.path_.pixel_to_xy(b.position[0],b.position[1]))
+            # self.path_.path_planner(b.position[0],b.position[1])
+            cv.putText(self.terrain, str(b.id), tuple(b.position), cv.FONT_HERSHEY_SIMPLEX,
+                        1, (255, 255, 0), 1, cv.LINE_AA)
 
             #  for score testing:
             # if i == 0:
@@ -109,6 +114,10 @@ class TerrainBalls:
             min = 5000
             # print(len(ball_centers))
             for i in range(len(ball_centers)):
+                # print(self.path_.pixel_to_xy(ball_centers[i][0],ball_centers[i][1]))
+                # if self.path_.click2!=0 :
+                # self.path_.path_planner(self.path_.pixel_to_xy(ball_centers[i][0],ball_centers[i][1])[0],
+                #     self.path_.pixel_to_xy(ball_centers[i][0],ball_centers[i][1])[1])
                 n = np.sqrt((ball_centers[i][0]-ball.position[0])
                             ** 2+(ball_centers[i][1]-ball.position[1])**2)
                 if n < min:
@@ -118,6 +127,9 @@ class TerrainBalls:
 
     def show_balls(self):
         cv.imshow('Terrain', self.terrain)
+        # self.path_.path_planner()
+        cv.setMouseCallback('Terrain', self.path_.click_event)
+        # print(type(self.terrain))
         cv.waitKey(1)
 
     def __del__(self):
@@ -127,12 +139,15 @@ class TerrainBalls:
 
     def update(self, img, timeStamp):
         self.terrain = img
+        self.path_.img=self.terrain
+        for i in range(len(self.path_.path)-1) :
+            cv2.line(self.terrain,self.path_.xy_to_pixel(self.path_.path[i][0],self.path_.path[i][1]),self.path_.xy_to_pixel(self.path_.path[i+1][0],self.path_.path[i+1][1]),(255,0,0),2)
         self.time = timeStamp
         self.detect_balls()
         self.show_balls()
 
 class Path_Planner :
-    def __init__(self,click1=0,click2=0,i=-1,scale=20/1216,passage1=np.array([0,4.5]),passage2=np.array([0,-4.5]),collect1=np.array([-9.19407895,-4.55592105]),collect2=np.array([9.14473684,4.6875]),path=[]) :
+    def __init__(self,img,click1=[0,0],click2=[0,0],i=-1,scale=20/1216,passage1=np.array([0,4.5]),passage2=np.array([0,-4.5]),collect1=np.array([-9.19407895,-4.55592105]),collect2=np.array([9.14473684,4.6875]),path=[]) :
         self.click1=click1
         self.click2=click2
         self.i=i
@@ -142,7 +157,7 @@ class Path_Planner :
         self.collect1=collect1
         self.collect2=collect2
         self.path=path
-        self.img=cv2.imread('terrain_1.png', 1)
+        self.img=img
 
     def pixel_to_xy(self,lin,col):
         X=np.array([lin,col])
@@ -156,6 +171,9 @@ class Path_Planner :
         return X
 
     def path_planner(self,x,y):
+        self.click2=self.click1
+        self.click1=np.array([x,y])
+        # print(self.click2,self.click1)
         X=(x,y)
         n,p,_=self.img.shape
         if x>0:
@@ -163,45 +181,52 @@ class Path_Planner :
             if (self.i==0) :
                 self.path.append(self.collect2.tolist())
                 x0,y0=self.xy_to_pixel(*self.collect2)
-            # if (sign(pixel_to_xy(click2[0],click2[1],self.img.shape)[0])!=sign(pixel_to_xy(click1[0],click1[1],self.img.shape)[0])) :
+
             else :
                 x0,y0=self.click2[0],self.click2[1]
-            cv2.line(self.img, (x0,y0),(x,y), (255,0,0), 2)
+            # cv2.line(self.img, (x0,y0),(x,y), (255,0,0), 2)
             # return self.collect2
         else:
             x,y=self.xy_to_pixel(x,y)
             if (self.i==0) :
                 self.path.append(self.collect1.tolist())
-                x0,y0=self.xy_to_pixel(*self.collect1,self.img.shape)
+                x0,y0=self.xy_to_pixel(*self.collect1)
             else :
                 x0,y0 = self.click2[0],self.click2[1]
             # x0,y0=int(collect1[0]/self.scale+p/2),int(collect1[1]/self.scale+n/2)
-            cv2.line(self.img, (x0,y0),(x,y), (255,0,0), 2)
+            # cv2.line(self.img, (x0,y0),(x,y), (255,0,0), 2)
             # return collect1
-        self.path.append(self.pixel_to_xy(x,y).tolist())
-        print(self.path)
+
+        #utilisation i=indice auquel on va ajouter un nouveau chemin
+        if np.sign(self.pixel_to_xy(x,y)[0])==np.sign(self.pixel_to_xy(x0,y0)[0]) :
+            self.path.append(self.pixel_to_xy(x,y).tolist())
+        else :
+            self.path=np.concatenate((np.array([self.collect1,self.pixel_to_xy(x,y),self.passage1]),np.array(self.path)),axis=0).tolist()
+        for i in range(len(self.path)-1) :
+            cv2.line(self.img,self.xy_to_pixel(self.path[i][0],self.path[i][1]),self.xy_to_pixel(self.path[i+1][0],self.path[i+1][1]),(255,0,0),2)
+        # print(self.path)
 
     def click_event(self,event, x, y, flags, params):
-        if event == cv2.EVENT_LBUTTONDOWN:
-            self.click2=self.click1
+        if event == cv.EVENT_LBUTTONDOWN:
+            # self.click2=self.click1
             # print(self.click2)
-            self.click1=np.array([x,y])
+            # self.click1=np.array([x,y])
             self.i+=1
             n,p,_=self.img.shape
             # print((click1-np.array([p,n])/2)*self.scale)
             if self.i%2==1:
-                cv2.circle(self.img, (x,y), 10, (0,0,255), 5)
-                cv2.putText(self.img, str(self.i//2), (x,y), cv2.FONT_HERSHEY_SIMPLEX,
-                1, (255,255,0), 1, cv2.LINE_AA)
+                cv.circle(self.img, (x,y), 10, (0,0,255), 5)
+                cv.putText(self.img, str(self.i//2), (x,y), cv.FONT_HERSHEY_SIMPLEX,
+                1, (255,255,0), 1, cv.LINE_AA)
             if self.i%2==0:
-                cv2.circle(self.img, (x,y), 10, (255,0,0), 5)
+                cv.circle(self.img, (x,y), 10, (255,0,0), 5)
                 # print(np.linalg.norm(self.click2-click1)*self.scale)
-                cv2.putText(self.img, str(self.i//2-1), (x,y), cv2.FONT_HERSHEY_SIMPLEX,
-                1, (255,255,0), 1, cv2.LINE_AA)
+                cv.putText(self.img, str(self.i//2-1), (x,y), cv.FONT_HERSHEY_SIMPLEX,
+                1, (255,255,0), 1, cv.LINE_AA)
             x,y=self.pixel_to_xy(x,y)
             # print(x,y)
             self.path_planner(x,y)
-            cv2.imshow('image', self.img)
+            cv.imshow('Terrain', self.img)
 
 t=TerrainBalls(0)
 t.Camera.destroy_node()

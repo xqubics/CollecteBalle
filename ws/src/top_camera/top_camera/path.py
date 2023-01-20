@@ -78,6 +78,49 @@ def click_event(event, x, y, flags, params):
         path_planner(x,y,img,click2,i)
         cv2.imshow('image', img)
 
+# def detect_balls(terrain,nb_balls,balls,time):
+#     frame_HSV = cv.cvtColor(terrain, cv.COLOR_BGR2HSV)
+#     frame_threshold = cv.inRange(frame_HSV, (24, 1, 1), (51, 255, 255))
+#     ret, thresh = cv.threshold(frame_threshold, 127, 255, cv.THRESH_BINARY)
+#     contours, h = cv.findContours(
+#         thresh, cv.RETR_CCOMP, cv.CHAIN_APPROX_NONE)
+#     ball_centers = []
+#     for cnt in contours:
+#         (cx, cy), radius = cv.minEnclosingCircle(cnt)
+#         ball_centers.append([int(cx), int(cy)])
+#         cv.drawContours(terrain, [cnt], 0, (0, 0, 255), -1)
+#     n = len(ball_centers)
+#     for i in range(nb_balls):
+#         # print('boucle')
+#         k = find_match(balls[i], ball_centers)
+#         if k != -1:
+#             balls[i].set_position(ball_centers[k])
+#             ball_centers.pop(k)
+#     if nb_balls < n:
+#         for j in range(len(ball_centers)):
+#             # print('new_ball')
+#             nb_balls = nb_balls+1
+#             balls.append(
+#                 Ball(nb_balls, time, ball_centers[j]))
+#     for b in balls:
+#         b.set_time(time)
+#         cv2.putText(terrain, str(b.id), tuple(b.position), cv2.FONT_HERSHEY_SIMPLEX,
+#                     1, (255, 255, 0), 1, cv2.LINE_AA)
+
+# def find_match(ball, ball_centers):
+#         if len(ball_centers) == 0:
+#             return -1
+#         else:
+#             min = 5000
+#             # print(len(ball_centers))
+#             for i in range(len(ball_centers)):
+#                 n = np.sqrt((ball_centers[i][0]-ball.position[0])
+#                             ** 2+(ball_centers[i][1]-ball.position[1])**2)
+#                 if n < min:
+#                     min = n
+#                     closest_ball = i
+#             return closest_ball
+
 # driver function
 if __name__ == "__main__":
     img = cv2.imread('terrain_1.png', 1)
