@@ -42,7 +42,7 @@ Préparer les tâches d'avance et bien pense à la difficulté (temps de réalis
 - **Code style uniforme** (Linting) <span class="color: red">[important]</span>
 - CI en utilisant **Github Actions** ... PO peut faire ça <span class="color: red">[important]</span>
 
-- À implementer plus tart (pas nécessaire dans le sprint 5):
-    - Ajouter des tests unitires  ... à venir plus tard
+- À implementer plus tard (pas nécessaire dans le sprint 5):
+    - Ajouter des tests unitires
         - tip: Gtest (Google Test), PyTest
 
