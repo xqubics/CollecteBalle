@@ -8,7 +8,7 @@ Pourcentage de tâches réalisées: 45%
 
 ### Ce qui a fonctionné
 
-###### A compléter.
+Les données renvoyés par la caméra ont pu être récoltées. Nous avons décidé d'un modèle de robot adapté à la sécurité de l'utilisateur.
 
 
 ### Ce qui n'a pas fonctionné
