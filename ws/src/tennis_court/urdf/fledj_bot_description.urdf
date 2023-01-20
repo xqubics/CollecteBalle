@@ -80,6 +80,10 @@
     <origin xyz="0.0 0.0 ${-(wheel_radius+wheel_zoff)}" rpy="0 0 0"/>
   </joint>
 
+  <gazebo reference="base_link">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
 
   <!-- Wheels -->
   <xacro:macro name="wheel" params="prefix x_reflect y_reflect">
@@ -89,7 +93,7 @@
         <geometry>
             <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
         </geometry>
-        <material name="Lime">
+        <material name="Green">
           <color rgba="0 1.0 0 1.0"/>
         </material>
       </visual>
@@ -130,12 +134,19 @@
   <xacro:wheel prefix="drivewhl_l" x_reflect="-1" y_reflect="1" />
   <xacro:wheel prefix="drivewhl_r" x_reflect="-1" y_reflect="-1" />
 
+  <gazebo reference="drivewhl_l_link">
+    <material>Gazebo/Green</material>
+  </gazebo>
+  <gazebo reference="drivewhl_r_link">
+    <material>Gazebo/Green</material>
+  </gazebo>
+
   <link name="front_caster">
     <visual>
       <geometry>
         <sphere radius="${(wheel_radius+wheel_zoff-(base_height/2))}"/>
       </geometry>
-      <material name="Lime">
+      <material name="Green">
         <color rgba="0 1.0 0 1.0"/>
       </material>
     </visual>
@@ -170,6 +181,10 @@
     <child link="front_caster"/>
     <origin xyz="${caster_xoff} 0.0 ${-(base_height/2)}" rpy="0 0 0"/>
   </joint>
+
+  <gazebo reference="front_caster">
+    <material>Gazebo/Green</material>
+  </gazebo>
 
 
   <!-- Ramasseur de balles -->
@@ -206,6 +221,13 @@
   <xacro:pickside prefix="pickside_l" x_reflect="-1" y_reflect="1" />
   <xacro:pickside prefix="pickside_r" x_reflect="-1" y_reflect="-1" />
 
+  <gazebo reference="pickside_l_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <gazebo reference="pickside_r_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
 
   <link name="pickback">
 	  <visual>
@@ -233,6 +255,10 @@
   	<origin xyz="${base_length/2+pickback_length/2} 0 ${pick_zoff}" rpy="0 0 0"/>
   	<axis xyz="0 1 0"/>
   </joint>
+
+  <gazebo reference="pickback">
+    <material>Gazebo/Black</material>
+  </gazebo>
 
 
   <link name="imu_link">
@@ -359,74 +385,9 @@
       <!-- commands -->
       <torque>20</torque>
       <commandTopic>cmd_vel</commandTopic>
-
-
-
     </plugin>
   </gazebo>
 
-<!--  <link name="lidar_link">
-    <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="0.125"/>
-      <inertia ixx="0.001"  ixy="0"  ixz="0" iyy="0.001" iyz="0" izz="0.001" />
-    </inertial>
-
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-         <cylinder radius="0.0508" length="0.055"/>
-      </geometry>
-    </collision>
-
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-         <cylinder radius="0.0508" length="0.055"/>
-      </geometry>
-    </visual>
-  </link>
-    
-  <joint name="lidar_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="lidar_link"/>
-    <origin xyz="0 0 0.12" rpy="0 0 0"/>
-  </joint>
-    
-  <gazebo reference="lidar_link">
-    <sensor name="lidar" type="ray">
-      <always_on>true</always_on>
-      <visualize>true</visualize>
-      <update_rate>5</update_rate>
-      <ray>
-        <scan>
-          <horizontal>
-            <samples>360</samples>
-            <resolution>1.000000</resolution>
-            <min_angle>0.000000</min_angle>
-            <max_angle>6.280000</max_angle>
-          </horizontal>
-        </scan>
-        <range>
-          <min>0.120000</min>
-          <max>3.5</max>
-          <resolution>0.015000</resolution>
-        </range>
-        <noise>
-          <type>gaussian</type>
-          <mean>0.0</mean>
-          <stddev>0.01</stddev>
-        </noise>
-      </ray>
-      <plugin name="scan" filename="libgazebo_ros_ray_sensor.so">
-        <ros>
-          <remapping>~/out:=scan</remapping>
-        </ros>
-        <output_type>sensor_msgs/LaserScan</output_type>
-        <frame_name>lidar_link</frame_name>
-      </plugin>
-    </sensor>
-  </gazebo> -->
   
   <link name="camera_link">
     <visual>

@@ -85,24 +85,24 @@ class TerrainBalls:
             1, (255,255,0), 1, cv2.LINE_AA)
             
             # for score testing:
-            if i == 0:
-                self.score_history = np.vstack([
-                    self.score_history,
-                    np.array([
-                        self.time,
-                        b.get_score(currentTimeStamp=self.time)
-                    ])
-                ])
+            # if i == 0:
+            #     self.score_history = np.vstack([
+            #         self.score_history,
+            #         np.array([
+            #             self.time,
+            #             b.get_score(currentTimeStamp=self.time)
+            #         ])
+            #     ])
             # ----------
             # self.isolatedBalls=img
 
         # for score testing:
-        plt.cla()
-        # print('score_history', self.score_history[:])
+        # plt.cla()
+        # # print('score_history', self.score_history[:])
 
-        plt.plot(self.score_history[:, 0], self.score_history[:, 1])
-        plt.draw()
-        plt.pause(0.01)
+        # plt.plot(self.score_history[:, 0], self.score_history[:, 1])
+        # plt.draw()
+        # plt.pause(0.01)
         # ----------
 
     def findMatch(self,ball):
