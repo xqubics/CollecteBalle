@@ -32,7 +32,7 @@ Préparer les tâches d'avance et bien pense à la difficulté (temps de réalis
 ## Nouvelles mesures
 
 ### Tâches à réaliser:
-- Améliorer la vitesse u robot ( Ajouter un bouton "vitesse boost" ? )
+- Améliorer la vitesse du robot ( Ajouter un bouton "vitesse boost" ? )
 - Fixer path planning algo - demi plans bug
 - Détection de balles: Gérer disparassion de balles - Qu'est-ce qu'on fait quand on ne voit plus la balle ?
 - Proposer un nouveu nom pour le robot
