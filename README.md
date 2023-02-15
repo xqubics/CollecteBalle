@@ -1,6 +1,6 @@
 # Tennis Ball Collector
 
-[![collecte-balle-ros-foxy](https://github.com/xqubics/CollecteBalle/actions/workflows/collecte-balle-ros-foxy.yml/badge.svg)](https://github.com/xqubics/CollecteBalle/actions/workflows/collecte-balle-ros-foxy.yml)
+[![collecte-balle-ros-foxy](https://github.com/FLEDJ-Inge/CollecteBalle/actions/workflows/collecte-balle-ros-foxy.yml/badge.svg)](https://github.com/FLEDJ-Inge/CollecteBalle/actions/workflows/collecte-balle-ros-foxy.yml)
 
 Membres :
 DECAUDAVEINE Ermance
