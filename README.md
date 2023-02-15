@@ -1,5 +1,7 @@
 # Tennis Ball Collector
 
+[![collecte-balle-ros-foxy](https://github.com/xqubics/CollecteBalle/actions/workflows/collecte-balle-ros-foxy.yml/badge.svg)](https://github.com/xqubics/CollecteBalle/actions/workflows/collecte-balle-ros-foxy.yml)
+
 Membres :
 DECAUDAVEINE Ermance
 HODEK Jakub
