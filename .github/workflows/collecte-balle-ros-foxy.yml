@@ -14,4 +14,4 @@ jobs:
       - uses: ros-tooling/action-ros-ci@0.2.7
         with:
           target-ros2-distro: foxy
-          package-name: top_camera robot_control
+          package-name: top_camera
