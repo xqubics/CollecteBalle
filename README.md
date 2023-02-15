@@ -76,3 +76,10 @@ for `top_camera` pkg:
     rosdep install -i --from-path src --rosdistro foxy -y -r
 ```
 <!-- sudo apt install ros-humble-ament-pycodestyle -->
+
+
+### Testing
+```sh
+    make test
+```
+*Note: You should be in the root folder, where the Makefile is.*
