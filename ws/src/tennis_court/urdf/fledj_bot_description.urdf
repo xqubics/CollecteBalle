@@ -3,7 +3,7 @@
 
   <!-- Define robot constants -->
   <xacro:property name="base_width" value="0.31"/>
-  <xacro:property name="base_length" value="0.42"/>
+  <xacro:property name="base_length" value="0.34"/>
   <xacro:property name="base_height" value="0.18"/>
 
   <xacro:property name="pickside_width" value="0.05"/>
@@ -11,7 +11,7 @@
   <xacro:property name="pickside_height" value="0.12"/>
 
   <xacro:property name="pickback_width" value="0.45"/>
-  <xacro:property name="pickback_length" value="0.050"/>
+  <xacro:property name="pickback_length" value="0.01"/>
   <xacro:property name="pickback_height" value="0.12"/>
 
   <xacro:property name="pickside_ygap" value="0.03"/>
@@ -23,7 +23,12 @@
   <xacro:property name="wheel_zoff" value="0.05"/>
   <xacro:property name="wheel_xoff" value="0.12"/>
 
-  <xacro:property name="caster_xoff" value="0.14"/>
+  <xacro:property name="caster_xoff" value="0.1"/>
+  <!--Robot shape (base_length+pickback_length+pickside_length, pickback_width+pickside_width, wheel_radius+base_height)
+  Soit  (0.34+0.01+0.15, 0.45+0.05, 0.1+0.18) = (0.5, 0.5, 0.28) -->
+  <!-- Garde au sol (wheel_radius+wheel_zoff-pickback_height/2)
+  Soit  0.1+0.05+0.06 = 0.21m -->
+
 
   <!-- Define some commonly used intertial properties  -->
   <xacro:macro name="box_inertia" params="m w h d">
@@ -70,6 +75,12 @@
     <xacro:box_inertia m="10" w="${base_width}" d="${base_length}" h="${base_height}"/>
   </link>
   
+  <gazebo reference="base_link">
+    <material>Gazebo/Red</material>
+    <mass value="10"/>
+    <pose>-5 -5 1</pose>
+  </gazebo>
+
 
    <!-- Robot Footprint -->
   <link name="base_footprint">
@@ -79,13 +90,8 @@
   <joint name="base_joint" type="fixed">
     <parent link="base_link"/>
     <child link="base_footprint"/>
-    <origin xyz="0.0 0.0 ${-(wheel_radius+wheel_zoff)}" rpy="0 0 0"/>
+    <origin xyz="0 0 ${-(wheel_radius+wheel_zoff)}" rpy="0 0 0"/>
   </joint>
-
-  <gazebo reference="base_link">
-    <material>Gazebo/Red</material>
-    <mass value="10"/>
-  </gazebo>
 
 
   <!-- Wheels -->
@@ -140,7 +146,7 @@
   <gazebo reference="drivewhl_l_link">
     <material>Gazebo/Green</material>
     <mass value="2"/>
-</gazebo>
+  </gazebo>
   <gazebo reference="drivewhl_r_link">
     <material>Gazebo/Green</material>
     <mass value="2"/>
@@ -179,7 +185,7 @@
       </surface>
     </collision>
 
-    <xacro:sphere_inertia m="1" r="${(wheel_radius+wheel_zoff-(base_height/2))}"/>
+    <xacro:sphere_inertia m="0" r="${(wheel_radius+wheel_zoff-(base_height/2))}"/>
   </link>
 
   <joint name="caster_joint" type="fixed">
