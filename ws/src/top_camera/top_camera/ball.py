@@ -73,14 +73,14 @@ class TerrainBalls:
             if k != -1:
                 self.balls[i].set_position(ball_centers[k])
                 ball_centers.pop(k)
-        n=len(self.nb_balls)
+                
         if self.nb_balls < n:
             for j in range(len(ball_centers)):
                 # print('new_ball')
                 self.nb_balls = self.nb_balls+1
                 self.balls.append(
                     Ball(self.nb_balls, self.time, ball_centers[j]))
-        print(len(self.balls))
+        # print(len(self.balls))
         for b in self.balls:
             b.set_time(self.time)
             X=b.position
