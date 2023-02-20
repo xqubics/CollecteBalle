@@ -1,5 +1,7 @@
 # Tennis Ball Collector
 
+[![collecte-balle-ros-foxy](https://github.com/FLEDJ-Inge/CollecteBalle/actions/workflows/collecte-balle-ros-foxy.yml/badge.svg)](https://github.com/FLEDJ-Inge/CollecteBalle/actions/workflows/collecte-balle-ros-foxy.yml)
+
 Membres :
 DECAUDAVEINE Ermance
 HODEK Jakub
@@ -69,9 +71,17 @@ Le dossier `reports` doit être rempli avec les rapports d'[objectifs](../report
 
 _________
 
-### Installs
+### Installs
 for `top_camera` pkg:
 ```sh
     sudo apt install ros-foxy-vision-opencv ros-foxy-cv-bridge
     rosdep install -i --from-path src --rosdistro foxy -y -r
 ```
+<!-- sudo apt install ros-humble-ament-pycodestyle -->
+
+
+### Testing
+```sh
+    make test
+```
+*Note: You should be in the root folder, where the Makefile is.*
