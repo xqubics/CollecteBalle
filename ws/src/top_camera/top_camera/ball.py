@@ -73,7 +73,7 @@ class TerrainBalls:
             if k != -1:
                 self.balls[i].set_position(ball_centers[k])
                 ball_centers.pop(k)
-                
+
         if self.nb_balls < n:
             for j in range(len(ball_centers)):
                 # print('new_ball')
