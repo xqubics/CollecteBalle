@@ -33,7 +33,7 @@ Vérifier s'il les membres arrive à l'heure; faire le visio pour se synchronise
 ## Nouvelles mesures
 
 ### Tâches à réaliser:
-[Tache qui restent]
+[Taches qui restent]
 - Fixer path planning algo - demi plans bug
 - Détection de balles: Gérer disparassion de balles - Qu'est-ce qu'on fait quand on ne voit plus la balle ?
 - Quelle est la valeur de *Garde au sol* du notre robot ?
