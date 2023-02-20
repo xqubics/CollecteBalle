@@ -23,11 +23,12 @@
   <xacro:property name="wheel_zoff" value="0.05"/>
   <xacro:property name="wheel_xoff" value="0.12"/>
 
-  <xacro:property name="caster_xoff" value="0.1"/>
+  <xacro:property name="caster_xoff" value="0.09"/>
+
   <!--Robot shape (base_length+pickback_length+pickside_length, pickback_width+pickside_width, wheel_radius+base_height)
   Soit  (0.34+0.01+0.15, 0.45+0.05, 0.1+0.18) = (0.5, 0.5, 0.28) -->
   <!-- Garde au sol (wheel_radius+wheel_zoff-pickback_height/2)
-  Soit  0.1+0.05+0.06 = 0.21m -->
+  Soit  0.1+0.05-0.06 = 0.09m = 9cm -->
 
 
   <!-- Define some commonly used intertial properties  -->
@@ -51,7 +52,7 @@
     <inertial>
       <mass value="${m}"/>
       <inertia ixx="${(2/5) * m * (r*r)}" ixy="0.0" ixz="0.0" iyy="${(2/5) * m * (r*r)}" iyz="0.0" izz="${(2/5) * m * (r*r)}"/>
-    </inertial>
+      </inertial>
   </xacro:macro>
   
 
@@ -72,24 +73,23 @@
       </geometry>
     </collision>
 
-    <xacro:box_inertia m="10" w="${base_width}" d="${base_length}" h="${base_height}"/>
+    <xacro:box_inertia m="1" w="${base_width}" d="${base_length}" h="${base_height}"/>
   </link>
   
   <gazebo reference="base_link">
     <material>Gazebo/Red</material>
-    <mass value="10"/>
+    <mass value="1"/>
     <pose>-5 -5 1</pose>
   </gazebo>
 
 
    <!-- Robot Footprint -->
   <link name="base_footprint">
-  	<xacro:box_inertia m="0" w="0" d="0" h="0"/>
   </link>
 
   <joint name="base_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="base_footprint"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
     <origin xyz="0 0 ${-(wheel_radius+wheel_zoff)}" rpy="0 0 0"/>
   </joint>
 
@@ -115,8 +115,9 @@
 <!--         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>1</mu>
+              <mu2>1</mu2>
+              <implicit_spring_damper>true</implicit_spring_damper>
               <slip1>1.0</slip1>
               <slip2>1.0</slip2>
             </ode>
@@ -129,7 +130,7 @@
         </surface> -->
       </collision>
 
-      <xacro:cylinder_inertia m="2" r="${wheel_radius}" h="${wheel_width}"/>
+      <xacro:cylinder_inertia m="0.5" r="${wheel_radius}" h="${wheel_width}"/>
     </link>
 
     <joint name="${prefix}_joint" type="continuous">
@@ -145,11 +146,15 @@
 
   <gazebo reference="drivewhl_l_link">
     <material>Gazebo/Green</material>
-    <mass value="2"/>
+    <mass value="0.5"/>
+    <mu>0.</mu>
+    <mu2>1</mu2>
   </gazebo>
   <gazebo reference="drivewhl_r_link">
     <material>Gazebo/Green</material>
-    <mass value="2"/>
+    <mass value="0.5"/>
+    <mu>0.</mu>
+    <mu2>1</mu2>
   </gazebo>
 
 
@@ -168,24 +173,9 @@
       <geometry>
         <sphere radius="${(wheel_radius+wheel_zoff-(base_height/2))}"/>
       </geometry>
-      <surface>
-        <friction>
-          <ode>
-            <mu>0</mu>
-            <mu2>0</mu2>
-            <slip1>1.0</slip1>
-            <slip2>1.0</slip2>
-          </ode>
-        </friction>
-<!--         <contact>
-          <ode>
-            <min_depth>0.001</min_depth>
-          </ode>
-        </contact> -->
-      </surface>
     </collision>
 
-    <xacro:sphere_inertia m="0" r="${(wheel_radius+wheel_zoff-(base_height/2))}"/>
+    <xacro:sphere_inertia m="0.5" r="${(wheel_radius+wheel_zoff-(base_height/2))}"/>
   </link>
 
   <joint name="caster_joint" type="fixed">
@@ -196,7 +186,8 @@
 
   <gazebo reference="front_caster">
     <material>Gazebo/Green</material>
-    <mass value="1"/>
+    <mu>0.</mu>
+    <mu2>0.</mu2>
   </gazebo>
 
 
@@ -220,7 +211,7 @@
     </geometry>
     </collision>
 
-    <xacro:box_inertia m="0.5" w="${pickside_width}" d="${pickside_length}" h="${pickside_height}"/>
+    <xacro:box_inertia m="0.05" w="${pickside_width}" d="${pickside_length}" h="${pickside_height}"/>
   </link>
 
   <joint name="${prefix}_joint" type="fixed">
@@ -236,10 +227,11 @@
 
   <gazebo reference="pickside_l_link">
     <material>Gazebo/Black</material>
-    <mass value="0.5"/>
+    <mass value="0.05"/>
   </gazebo>
   <gazebo reference="pickside_r_link">
     <material>Gazebo/Black</material>
+    <mass value="0.05"/>
   </gazebo>
 
 
@@ -260,7 +252,7 @@
 	    </geometry>
 	  </collision>
 
-	  <xacro:box_inertia m="0.5" w="${pickback_width}" d="${pickback_length}" h="${pickback_height}"/>
+	  <xacro:box_inertia m="0.05" w="${pickback_width}" d="${pickback_length}" h="${pickback_height}"/>
   </link>
 
   <joint name="pickback_joint" type="fixed">
@@ -272,7 +264,7 @@
 
   <gazebo reference="pickback">
     <material>Gazebo/Black</material>
-    <mass value="0.5"/>
+    <mass value="0.05"/>
   </gazebo>
 
 
@@ -381,24 +373,18 @@
       <right_joint>drivewhl_r_joint</right_joint>
 
       <!-- kinematics -->
-      <wheel_separation>0.4</wheel_separation>
-      <wheel_diameter>0.2</wheel_diameter>
+      <wheel_separation>1</wheel_separation>
+      <wheel_diameter>.5</wheel_diameter>
 
       <!-- limits -->	
-      <max_wheel_torque>20</max_wheel_torque>
-      <max_wheel_acceleration>1.0</max_wheel_acceleration>
+      <max_wheel_torque>40</max_wheel_torque>
+      <max_wheel_acceleration>5</max_wheel_acceleration>
 
       <!-- output -->
-      <publish_odom>true</publish_odom>
-      <publish_odom_tf>false</publish_odom_tf>
-      <publish_wheel_tf>true</publish_wheel_tf>
-
-      <odometry_topic>odom</odometry_topic>
-      <odometry_frame>odom</odometry_frame>
       <robot_base_frame>base_link</robot_base_frame>
 
       <!-- commands -->
-      <torque>20</torque>
+      <torque>40</torque>
       <commandTopic>cmd_vel</commandTopic>
     </plugin>
   </gazebo>

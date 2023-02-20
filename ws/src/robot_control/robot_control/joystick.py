@@ -50,13 +50,11 @@ class XboxController(object):
             events = get_gamepad()
             for event in events:
                 if event.code == 'ABS_Y':
-                    # self.LeftJoystickY = event.state / XboxController.MAX_JOY_VAL # normalize between -1 and 1
-                    self.LeftJoystickY = (
-                        event.state - 129) / 129  # normalize between -1 and 1
+                    self.LeftJoystickY = event.state / XboxController.MAX_JOY_VAL # normalize between -1 and 1
+                    # self.LeftJoystickY = (event.state - 129) / 129  # normalize between -1 and 1
                 elif event.code == 'ABS_X':
-                    # self.LeftJoystickX = event.state / XboxController.MAX_JOY_VAL # normalize between -1 and 1
-                    self.LeftJoystickX = (
-                        event.state - 129) / 129  # normalize between -1 and 1
+                    self.LeftJoystickX = event.state / XboxController.MAX_JOY_VAL # normalize between -1 and 1
+                    # self.LeftJoystickX = (event.state - 129) / 129  # normalize between -1 and 1
                 elif event.code == 'ABS_RY':
                     self.RightJoystickY = event.state / XboxController.MAX_JOY_VAL  # normalize between -1 and 1
                 elif event.code == 'ABS_RX':
@@ -110,7 +108,7 @@ class MinimalPublisher(Node):
     def timer_callback(self):
         LeftJoystickX, LeftTrigger, RightTrigger, A = self.joy.read()
         msg = Twist()
-        msg.linear.x = (float(RightTrigger) - float(LeftTrigger)) / 8
+        msg.linear.x = 6*(float(RightTrigger) - float(LeftTrigger)) / 8
         msg.linear.y = 0.
         msg.linear.z = 0.
 
