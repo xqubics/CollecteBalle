@@ -43,46 +43,43 @@ class Path_Planner :
 
             else :
                 x0,y0=self.click2[0],self.click2[1]
-            # cv2.line(self.img, (x0,y0),(x,y), (255,0,0), 2)
-            # return self.collect2
+            self.path.append(self.pixel_to_xy(x,y).tolist())
+            print(self.path)
         else:
-            x,y=self.xy_to_pixel(x,y)
-            if (self.i==0) :
-                self.path.append(self.collect1.tolist())
-                x0,y0=self.xy_to_pixel(*self.collect1)
-            else :
-                x0,y0 = self.click2[0],self.click2[1]
-            # x0,y0=int(collect1[0]/self.scale+p/2),int(collect1[1]/self.scale+n/2)
-            # cv2.line(self.img, (x0,y0),(x,y), (255,0,0), 2)
-            # return collect1
+            print("Terrain de gauche")
+
+
+            # #COMPLEXIFIED (terrain de gauche)
+            # x,y=self.xy_to_pixel(x,y)
+            # if (self.i==0) :
+            #     self.path.append(self.collect1.tolist())
+            #     x0,y0=self.xy_to_pixel(*self.collect1)
+            # else :
+            #     x0,y0 = self.click2[0],self.click2[1]
+            # # x0,y0=int(collect1[0]/self.scale+p/2),int(collect1[1]/self.scale+n/2)
+            # # cv2.line(self.img, (x0,y0),(x,y), (255,0,0), 2)
+            # # return collect1
 
         #utilisation i=indice auquel on va ajouter un nouveau chemin
-        if np.sign(self.pixel_to_xy(x,y)[0])==np.sign(self.pixel_to_xy(x0,y0)[0]) :
-            self.path.append(self.pixel_to_xy(x,y).tolist())
-        else :
-            self.path=np.concatenate((np.array([self.collect1,self.pixel_to_xy(x,y),self.passage1]),np.array(self.path)),axis=0).tolist()
+        # if np.sign(self.pixel_to_xy(x,y)[0])==np.sign(self.pixel_to_xy(x0,y0)[0]) :
+        # self.path.append(self.pixel_to_xy(x,y).tolist())
+        # else :
+            # self.path=np.concatenate((np.array([self.collect1,self.pixel_to_xy(x,y),self.passage1]),np.array(self.path)),axis=0).tolist()
+
+        #Draw lines
         for i in range(len(self.path)-1) :
             cv2.line(self.img,self.xy_to_pixel(self.path[i][0],self.path[i][1]),self.xy_to_pixel(self.path[i+1][0],self.path[i+1][1]),(255,0,0),2)
-        print(self.path)
+
 
     def click_event(self,event, x, y, flags, params):
         if event == cv2.EVENT_LBUTTONDOWN:
             self.click2=self.click1
-            # print(self.click2)
             self.click1=np.array([x,y])
             self.i+=1
             n,p,_=self.img.shape
-            # print((click1-np.array([p,n])/2)*self.scale)
-            # if self.i%2==1:
             cv2.circle(self.img, (x,y), 10, (0,0,255), 5)
             cv2.putText(self.img, str(len(self.path)-self.i+1), (x,y), cv2.FONT_HERSHEY_SIMPLEX,1, (255,255,0), 1, cv2.LINE_AA)
-            # if self.i%2==0:
-                # cv2.circle(self.img, (x,y), 10, (255,0,0), 5)
-                # print(np.linalg.norm(self.click2-click1)*self.scale)
-                # cv2.putText(self.img, str(self.i//2-1), (x,y), cv2.FONT_HERSHEY_SIMPLEX,
-                # 1, (255,255,0), 1, cv2.LINE_AA)
             x,y=self.pixel_to_xy(x,y)
-            # print(x,y)
             self.path_planner(x,y)
             cv2.imshow('image', self.img)
 
