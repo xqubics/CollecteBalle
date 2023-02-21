@@ -10,9 +10,20 @@ class RobotPositionController(Node):
         super().__init__('robot_position_controller')
         self._publisher = self.create_publisher(Twist, 'demo/cmd_vel', 10)
 
-        self._subscription = self.create_subscription(
+        self._robot_pos_subscription = self.create_subscription(
             Pose2D, 'robot/position', self._new_position_received_callback, 10)
-        self._subscription  # prevent unused variable warning
+        self._robot_pos_subscription  # prevent unused variable warning
+
+        self._target_pos_subscription = self.create_subscription(
+            Pose2D, 'robot/target_position', self._new_target_position_received_callback, 10)
+        self._target_pos_subscription  # prevent unused variable warning
+
+        self._target_position = (None, None)  #  [x, y]
+
+    def _new_target_position_received_callback(self, pose):
+        self._target_position = (pose.x, pose.y)
+        self.get_logger().info('New target position set: [%s, %s]' %
+                               (self._target_position[0], self._target_position[1]))
 
     def _new_position_received_callback(self, pose):
         position = (pose.x, pose.y)
@@ -20,15 +31,17 @@ class RobotPositionController(Node):
         # timestamp = 0
         # print("new position received", position, heading)
 
-        target_position = (400, 400)  #  [x, y]
+        #  In case we don't have a target position, we use the current position as target = stops the robot
+        if self._target_position[0] is None:
+            self._target_position = position
 
         #  Compute the desired heading
-        desired_heading = np.arctan2(target_position[1] - position[1], target_position[0] - position[0])
+        desired_heading = np.arctan2(self._target_position[1] - position[1], self._target_position[0] - position[0])
 
         #  Compute the distance to the target
-        distance_to_target = np.sqrt((target_position[1] - position[1]) ** 2 + (target_position[0] - position[0]) ** 2)
+        distance_to_target = np.sqrt(
+            (self._target_position[1] - position[1]) ** 2 + (self._target_position[0] - position[0]) ** 2)
 
-        # desired_heading = np.pi  #  @TODO: set desired heading
         self._heading_controller(desired_heading, heading, distance_to_target)
 
     def __sawtooth(self, x):
@@ -49,7 +62,7 @@ class RobotPositionController(Node):
         msg.angular.x = 0.
         msg.angular.y = 0.
         u_z = -1 * self.__sawtooth(desired_heading - heading)
-        msg.angular.z = u_z  #  @ TODO: timestamp verification??
+        msg.angular.z = u_z
         #  [-] .. clockwise rotation; [+] .. counter-clockwise rotation
 
         # Stop the robot - if he is close enough to the target
