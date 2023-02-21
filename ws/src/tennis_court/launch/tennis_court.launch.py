@@ -20,8 +20,8 @@ def generate_launch_description():
         ROS_DISTRO == ROS_DISTRO_HUMBLE) else "node_executable"
     pkg_share = get_package_share_directory("tennis_court")
     gazebo_ros_share = get_package_share_directory("gazebo_ros")
-    # model_path = os.path.join(pkg_share, 'urdf/fledj_bot_description.urdf')
-    model_path = os.path.join(pkg_share, 'urdf/test_robot.urdf')
+    model_path = os.path.join(pkg_share, 'urdf/fledj_bot_description.urdf')
+    # model_path = os.path.join(pkg_share, 'urdf/test_robot.urdf')
     world_path = os.path.join(pkg_share, 'worlds/court.world')
 
     # Gazebo Server
