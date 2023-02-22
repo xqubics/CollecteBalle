@@ -1,8 +1,9 @@
 import cv2 as cv
 import numpy as np
 from rclpy.node import Node
-from zenith_camera_subscriber import *
-from tools.hsv_range_finder import HSVRangeFinder
+from .zenith_camera_subscriber import *
+# from zenith_camera_subscriber import *
+# from .tools.hsv_range_finder import HSVRangeFinder
 
 
 class RobotDetector(Node):
