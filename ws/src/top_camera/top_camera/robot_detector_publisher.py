@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Pose2D
 import numpy as np
-from robot_detector import RobotDetector
+from .robot_detector import RobotDetector
 
 
 class RobotDetectorPublisher(Node):
@@ -37,7 +37,6 @@ def main(args=None):
     robot_detector_publisher = RobotDetectorPublisher()
 
     rclpy.spin(robot_detector_publisher)
-
     robot_detector_publisher.destroy_node()
     rclpy.shutdown()
 

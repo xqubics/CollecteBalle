@@ -17,6 +17,13 @@ Dans la racine du workspace (ws), lancer:
     ros2 launch tennis_court tennis_court.launch.py
 ```
 
+### Démarrer tous les fichiers avec un launch
+Dans la racine du workspace (ws), lancer:
+```bash
+    colcon build
+    source ./install/setup.sh
+    ros2 launch robot_control all.launch.py
+```
 
 ## Groupe
 
@@ -31,7 +38,6 @@ Dans la racine du workspace (ws), lancer:
 ### Gestion de projet
 
 - [Taiga](https://tree.taiga.io/project/xqubics-fledj-inge/)
-
 
 
 ## Structure du dépôt
