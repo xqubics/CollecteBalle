@@ -17,8 +17,7 @@ DROUDUN Laurent
 
 
 ### Démarrer la simulation
-
-###### A compléter avec la/les commande(s) à lancer.
+Dans la racine du workspace (ws), lancer:
 ```bash
     colcon build
     source ./install/setup.sh
@@ -45,6 +44,7 @@ DROUDUN Laurent
 ## Structure du dépôt
 
 Ce dépôt doit être cloné dans le dossier `src` d'un workspace ROS 2.
+Le dossier ws/src contient trois packages : tennis_court, top_camera et robot_control
 
 ### Package `tennis_court`
 
@@ -55,7 +55,13 @@ Consulter le [README](tennis_court/README.md) du package pour plus d'information
 ### Package `top_camera`
 
 Le dossier `ws/src/top_camera` est un package ROS contenant le processing des données de la `zenith_camera` - la caméra placée au dessus du terrain de tennis.
-Ce package provide des positions de balle et de robot.
+Les codes qu'elles contient permettent donc, en s'abonnant à la caméra, de détecter le robot et les balles, et ainsi de detreminer le chemin à suivre.
+Consulter le [README](top_camera/README.md) du package pour plus d'informations.
+
+### Package 'robot_control'
+
+Le dossier 'ws/src/robot_control' est un package ROS contenant les codes de control du robot.
+Consulter le [README](robot_control/README.md) du package pour plus d'informations.
 
 ### Documents
 
