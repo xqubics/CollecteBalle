@@ -42,12 +42,16 @@ class RobotDetector(Node):
         #     (0, 35, 67),
         #     (10, 255, 202)
         # ]
-        purple_marker = [
-            (130, 27, 70),
-            (168, 255, 199)
-        ]
+        # purple_marker = [
+        #     (130, 27, 70),
+        #     (168, 255, 199)
+        # ]
+        black_marker = [
+            (0, 0, 0),
+            (180, 255, 40)
+        ]        
 
-        front_m_pos = self._detect_marker(purple_marker[0], purple_marker[1])
+        front_m_pos = self._detect_marker(black_marker[0], black_marker[1])
         rear_m_pos = self._detect_marker(blue_marker[0], blue_marker[1])
 
         if self.__debug:

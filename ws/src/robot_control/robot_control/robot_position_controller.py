@@ -48,7 +48,8 @@ class RobotPositionController(Node):
         return 2 * np.arctan(np.tan(x / 2))
 
     def _heading_controller(self, desired_heading, heading, distance_to_target):
-        MAX_SPEED = 4.0
+        MAX_SPEED = 3.0
+        MAX_HEAD = 0.75
 
         u_x = distance_to_target / 70.0
         if abs(u_x) > MAX_SPEED:
@@ -62,6 +63,8 @@ class RobotPositionController(Node):
         msg.angular.x = 0.
         msg.angular.y = 0.
         u_z = -1 * self.__sawtooth(desired_heading - heading)
+        if abs(u_z) > MAX_HEAD:
+            u_z = MAX_HEAD * np.sign(u_z)
         msg.angular.z = u_z
         #  [-] .. clockwise rotation; [+] .. counter-clockwise rotation
 

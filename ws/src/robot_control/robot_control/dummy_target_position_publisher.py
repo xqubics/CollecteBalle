@@ -13,8 +13,8 @@ class DummyTargetPositionPublisher(Node):
 
     def _timer_callback(self):
         msg = Pose2D()
-        msg.x = 300.
-        msg.y = 300.
+        msg.x = 800.
+        msg.y = 400.
         msg.theta = 0.
 
         self._publisher.publish(msg)
