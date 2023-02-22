@@ -1,8 +1,9 @@
 import cv2 as cv
 import numpy as np
 from rclpy.node import Node
-from zenith_camera_subscriber import *
-from tools.hsv_range_finder import HSVRangeFinder
+from .zenith_camera_subscriber import *
+# from zenith_camera_subscriber import *
+# from .tools.hsv_range_finder import HSVRangeFinder
 
 
 class RobotDetector(Node):
@@ -19,6 +20,13 @@ class RobotDetector(Node):
     """
 
     def __init__(self, data_updated_callback, debug=False, display_camera=False):
+        """
+            Constructor
+
+            :param data_updated_callback: called when the robot's position and heading is updated
+            :param debug: if True, prints debugging information
+            :param display_camera: if True, displays the camera image
+        """
         self._position = [0, 0]
         self._heading = 0
         self._timestamp = 0
@@ -53,12 +61,16 @@ class RobotDetector(Node):
         #     (0, 35, 67),
         #     (10, 255, 202)
         # ]
-        purple_marker = [
-            (125, 220, 115),
-            (179, 255, 158)
+        # purple_marker = [
+        #     (130, 27, 70),
+        #     (168, 255, 199)
+        # ]
+        black_marker = [
+            (0, 0, 0),
+            (180, 255, 40)
         ]
 
-        front_m_pos = self._detect_marker(purple_marker[0], purple_marker[1])
+        front_m_pos = self._detect_marker(black_marker[0], black_marker[1])
         rear_m_pos = self._detect_marker(blue_marker[0], blue_marker[1])
 
         if self.__debug:

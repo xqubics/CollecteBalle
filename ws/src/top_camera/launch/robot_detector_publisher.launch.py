@@ -3,9 +3,9 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     ld = LaunchDescription()
-    path_point_publisher_node = Node(
+    robot_detector_publisher_node = Node(
         package="top_camera",
-        executable="path_point_publisher"
+        executable="robot_detector_publisher"
     )
-    ld.add_action(path_point_publisher_node)
+    ld.add_action(robot_detector_publisher_node)
     return ld

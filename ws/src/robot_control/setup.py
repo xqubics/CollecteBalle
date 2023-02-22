@@ -23,8 +23,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'joystick = robot_control.joystick:main',
-            'robot_position_controller = robot_control.robot_position_controller:main'
+            # 'joystick = robot_control.joystick:main',
+            'robot_position_controller = robot_control.robot_position_controller:main',
+            'dummy = robot_control.dummy_target_position_publisher:main'
         ],
     },
 )

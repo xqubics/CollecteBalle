@@ -2,13 +2,16 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Pose2D
 import numpy as np
-from robot_detector import RobotDetector
+from .robot_detector import RobotDetector
 
 
 class RobotDetectorPublisher(Node):
     """
         Publisher class for the detected robot position (Pose2D message)
         Position is detected by the robot_detector using the top_camera
+
+        Publishes to:
+            - robot/position: detected robot position (Pose2D message)
     """
 
     def __init__(self):
@@ -34,7 +37,6 @@ def main(args=None):
     robot_detector_publisher = RobotDetectorPublisher()
 
     rclpy.spin(robot_detector_publisher)
-
     robot_detector_publisher.destroy_node()
     rclpy.shutdown()
 
