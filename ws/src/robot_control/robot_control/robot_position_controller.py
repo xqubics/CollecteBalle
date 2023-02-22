@@ -77,7 +77,7 @@ class RobotPositionController(Node):
             :return: None
         """
 
-        MAX_SPEED = 3.0
+        MAX_SPEED = 2.0
         MAX_HEAD = 0.75
 
         u_x = distance_to_target / 70.0

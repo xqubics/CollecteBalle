@@ -17,7 +17,7 @@ class RobotDetectorPublisher(Node):
     def __init__(self):
         super().__init__('robot_detector_publisher')
         self._publisher = self.create_publisher(Pose2D, 'robot/position', 10)
-        self._robot_detector = RobotDetector(self._new_position_received_callback, debug=False, display_camera=True)
+        self._robot_detector = RobotDetector(self._new_position_received_callback, debug=False, display_camera=False)
 
     def _new_position_received_callback(self, position, heading, timestamp):
         # print("new position received", position, heading, timestamp)

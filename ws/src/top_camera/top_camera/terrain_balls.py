@@ -3,19 +3,38 @@ import numpy as np
 from zenith_camera_subscriber import *
 from path_planner import PathPlanner
 from ball import Ball
+from rclpy.executors import MultiThreadedExecutor, SingleThreadedExecutor
+from threading import Thread
+
+
+def spin_srv(executor):
+    try:
+        executor.spin()
+    except rclpy.executors.ExternalShutdownException:
+        pass
 
 
 class TerrainBalls:
-    def __init__(self, timeStamp):
+    def __init__(self, timeStamp, display_camera=False, is_manual_launch=False):
         self.time = timeStamp
+        self.display_camera = display_camera
         self.score = 0
         self.terrain = None
         self.balls = []
         self.nb_balls = 0
-        rclpy.init()
-        self.Camera = ZenithCameraSubscriber(self._update)
+
+        if is_manual_launch:
+            rclpy.init()
+            self.Camera = ZenithCameraSubscriber(self._update)
+            rclpy.spin(self.Camera)
+        else:
+            # Run ZenithCameraSubscriber as a non-blocking node
+            self.Camera = ZenithCameraSubscriber(self._update)
+            self.__srv_executor = SingleThreadedExecutor()
+            self.__srv_executor.add_node(self.Camera)
+            self.__srv_thread = Thread(target=spin_srv, args=(self.__srv_executor, ), daemon=True)
+            self.__srv_thread.start()
         self.path_ = PathPlanner(self.Camera)
-        rclpy.spin(self.Camera)
 
     def _detect_balls(self, terrain):
         """
@@ -97,13 +116,13 @@ class TerrainBalls:
 
             :param terrain: the terrain image
         """
-        cv.imshow('Terrain', terrain)
-        cv.waitKey(1)
+        if self.display_camera:
+            cv.imshow('Terrain', terrain)
+            cv.waitKey(1)
 
     def __del__(self):
         self.Camera.destroy_node()
         cv.destroyAllWindows()
-        rclpy.shutdown()
 
     def _update(self, img, timeStamp):
         """
@@ -124,10 +143,21 @@ class TerrainBalls:
         self._detect_balls(self.terrain)
         self._show_balls(self.terrain)
 
+    def get_latest_path_point(self):
+        """
+            Returns the latest point of the path
+
+            :return: the latest point of the path OR None if the path is empty
+        """
+        if len(self.path_.path) == 0:
+            return None
+
+        return self.path_.xy_to_pixel(*self.path_.path[-1])
+
 
 def main(args=None):
 
-    terrain_balls = TerrainBalls(0)
+    terrain_balls = TerrainBalls(0, display_camera=True, is_manual_launch=True)
     terrain_balls.Camera.destroy_node()
 
     rclpy.shutdown()
