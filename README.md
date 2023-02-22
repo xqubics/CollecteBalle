@@ -43,18 +43,18 @@ Le dossier ws/src contient trois packages : tennis_court, top_camera et robot_co
 
 Le dossier `ws/src/tennis_court` est un package ROS contenant le monde dans lequel le robot ramasseur de balle devra évoluer ainsi qu'un script permettant de faire apparaître des balles dans la simulation.
 Ce package ne doit pas être modifié.
-Consulter le [README](src/tennis_court/README.md) du package pour plus d'informations.
+Consulter le [README](ws/src/tennis_court/README.md) du package pour plus d'informations.
 
 ### Package `top_camera`
 
 Le dossier `ws/src/top_camera` est un package ROS contenant le processing des données de la `zenith_camera` - la caméra placée au dessus du terrain de tennis.
 Les codes qu'elles contient permettent donc, en s'abonnant à la caméra, de détecter le robot et les balles, et ainsi de detreminer le chemin à suivre.
-Consulter le [README](top_camera/README.md) du package pour plus d'informations.
+Consulter le [README](ws/src/top_camera/README.md) du package pour plus d'informations.
 
 ### Package 'robot_control'
 
 Le dossier 'ws/src/robot_control' est un package ROS contenant les codes de control du robot.
-Consulter le [README](robot_control/README.md) du package pour plus d'informations.
+Consulter le [README](ws/src/robot_control/README.md) du package pour plus d'informations.
 
 ### Documents
 
