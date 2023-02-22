@@ -49,12 +49,10 @@ Consulter le [README](ws/src/tennis_court/README.md) du package pour plus d'info
 
 Le dossier `ws/src/top_camera` est un package ROS contenant le processing des données de la `zenith_camera` - la caméra placée au dessus du terrain de tennis.
 Les codes qu'elles contient permettent donc, en s'abonnant à la caméra, de détecter le robot et les balles, et ainsi de detreminer le chemin à suivre.
-Consulter le [README](ws/src/top_camera/README.md) du package pour plus d'informations.
 
 ### Package 'robot_control'
 
 Le dossier 'ws/src/robot_control' est un package ROS contenant les codes de control du robot.
-Consulter le [README](ws/src/robot_control/README.md) du package pour plus d'informations.
 
 ### Documents
 
@@ -71,7 +69,7 @@ Le dossier `reports` doit être rempli avec les rapports d'[objectifs](../report
 _________
 
 ### Installs
-for `top_camera` pkg:
+Pour le package 'top_camera':
 ```sh
     sudo apt install ros-foxy-vision-opencv ros-foxy-cv-bridge
     rosdep install -i --from-path src --rosdistro foxy -y -r
