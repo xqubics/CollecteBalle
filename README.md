@@ -4,9 +4,15 @@
 
 ## Lancer la simulation
 
-### Dépendences
 
-###### A compléter avec la/les dépendences.
+### Installation - Dépendences
+Pour installed les dépendences de packages lancer:
+```sh
+    sudo apt install ros-foxy-vision-opencv ros-foxy-cv-bridge
+    rosdep install -i --from-path src --rosdistro foxy -y -r
+```
+<!-- sudo apt install ros-humble-ament-pycodestyle -->
+
 
 
 ### Démarrer la simulation
@@ -24,6 +30,28 @@ Dans la racine du workspace (ws), lancer:
     source ./install/setup.sh
     ros2 launch robot_control all.launch.py
 ```
+
+### Démarrer des tests
+```sh
+    make test
+```
+*Note: Dans la racine du base (parent de ws) = où cette Make file se trouve.*
+
+#### Code style
+Nous utilisons [autopep8](https://pypi.org/project/autopep8/) pour vérifier et réparer erreurs de code style qui utilise [PEP8](https://www.python.org/dev/peps/pep-0008/) comme guide de style.
+
+En cas tu veux vérifier le code style d'un fichier, tu peux utiliser:
+```sh
+    autopep8 <path-to-file> --select=E,W --max-line-length=120 --diff
+```
+
+En cas tu veux réparer le code style d'un fichier, tu peux utiliser:
+```sh
+    autopep8 <path-to-file> --max-line-length=120 --select=E,W 
+```
+
+Pour VSCode, le fichier `.vscode/settings.json` est configuré pour utiliser autopep8 à chaque sauvegarde.
+
 
 ## Groupe
 
@@ -88,45 +116,3 @@ Le dossier `docs` contient tous les documents utiles au projet:
 
 Le dossier `reports` doit être rempli avec les rapports d'[objectifs](../reports/GoalsTemplate.md) et de [rétrospectives](../reports/DebriefTemplate.md) en suivant les deux templates mis à disposition. Ces deux rapports doivent être rédigés respectivement au début et à la fin de chaque sprint.
 
-_________
-
-### Installer
-Pour le package 'top_camera':
-```sh
-    sudo apt install ros-foxy-vision-opencv ros-foxy-cv-bridge
-    rosdep install -i --from-path src --rosdistro foxy -y -r
-```
-<!-- sudo apt install ros-humble-ament-pycodestyle -->
-
-### Build
-```sh
-    colcon build
-```
-
-### Tester
-```sh
-    make test
-```
-*Note: You should be in the root folder, where the Makefile is.*
-
-#### Code style
-Nous utilisons [autopep8](https://pypi.org/project/autopep8/) pour vérifier et réparer erreurs de code style.
-
-En cas tu veux vérifier le code style d'un fichier, tu peux utiliser:
-```sh
-    autopep8 <path-to-file> --select=E,W --max-line-length=120 --diff
-```
-
-En cas tu veux réparer le code style d'un fichier, tu peux utiliser:
-```sh
-    autopep8 <path-to-file> --max-line-length=120 --select=E,W 
-```
-
-Pour VSCode, le fichier `.vscode/settings.json` est configuré pour utiliser autopep8 à chaque sauvegarde.
-
-
-### Run
-```sh
-    source ./install/setup.sh
-    [insert command here]
-```
