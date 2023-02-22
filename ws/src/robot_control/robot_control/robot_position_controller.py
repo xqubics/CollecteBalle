@@ -18,7 +18,7 @@ class RobotPositionController(Node):
             Pose2D, 'robot/target_position', self._new_target_position_received_callback, 10)
         self._target_pos_subscription  # prevent unused variable warning
 
-        self._target_position = (None, None)  #  [x, y]
+        self._target_position = (None, None)  # [x, y]
 
     def _new_target_position_received_callback(self, pose):
         self._target_position = (pose.x, pose.y)

@@ -13,7 +13,8 @@ class RobotDetector(Node):
         self._timestamp = 0
         self._terrain = None
         self._hsvFinder = None
-        self._Camera = ZenithCameraSubscriber(self._camera_data_updated_callback)
+        self._Camera = ZenithCameraSubscriber(
+            self._camera_data_updated_callback)
         self.data_updated_callback = data_updated_callback
         self.__debug = debug
         self.__display_camera = display_camera
@@ -55,11 +56,14 @@ class RobotDetector(Node):
 
         #  If both markers are detected, calculate the position and heading of the robot
         if (front_m_pos[0] is not None and rear_m_pos[0] is not None):
-            self._heading = np.arctan2(front_m_pos[1] - rear_m_pos[1], front_m_pos[0] - rear_m_pos[0])
-            self._position = [rear_m_pos[0], rear_m_pos[1]]  #  TODO: change to center of robot
+            self._heading = np.arctan2(
+                front_m_pos[1] - rear_m_pos[1], front_m_pos[0] - rear_m_pos[0])
+            #  TODO: change to center of robot
+            self._position = [rear_m_pos[0], rear_m_pos[1]]
             self._timestamp = timestamp
 
-            self.data_updated_callback(self._position, self._heading, self._timestamp)
+            self.data_updated_callback(
+                self._position, self._heading, self._timestamp)
             # self._heading_controller(np.pi)  #  TODO: change to desired angle
             if self.__debug:
                 print('angle', np.rad2deg(self._heading))
@@ -82,11 +86,12 @@ class RobotDetector(Node):
             cnt = contours[0]
             # find circle
             (cx, cy), radius = cv.minEnclosingCircle(cnt)
-            cv.circle(self._terrain, (int(cx), int(cy)), int(radius), (0, 255, 0), 1)  # draw circle
+            cv.circle(self._terrain, (int(cx), int(cy)), int(
+                radius), (0, 255, 0), 1)  # draw circle
 
             return (cx, cy)
         else:
-            return (None, None)  #  No marker / multiple markers found
+            return (None, None)  # No marker / multiple markers found
 
     def get_heading(self):
         return self._heading
