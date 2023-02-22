@@ -2,13 +2,6 @@
 
 [![collecte-balle-ros-foxy](https://github.com/FLEDJ-Inge/CollecteBalle/actions/workflows/collecte-balle-ros-foxy.yml/badge.svg)](https://github.com/FLEDJ-Inge/CollecteBalle/actions/workflows/collecte-balle-ros-foxy.yml)
 
-Membres :
-DECAUDAVEINE Ermance
-HODEK Jakub
-POP Danut
-JERRAM Florian
-DROUDUN Laurent
-
 ## Lancer la simulation
 
 ### Dépendences
