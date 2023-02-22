@@ -6,6 +6,17 @@ from tools.hsv_range_finder import HSVRangeFinder
 
 
 class RobotDetector(Node):
+    """
+        Class for detecting the robot position and heading using the top camera
+
+        Public methods:
+            - get_position: returns the robot position (x, y) in pixels
+            - get_heading: returns the robot heading in radians
+
+        Private methods:
+            - _camera_data_updated_callback: callback function for the camera data
+
+    """
 
     def __init__(self, data_updated_callback, debug=False, display_camera=False):
         self._position = [0, 0]
@@ -62,22 +73,29 @@ class RobotDetector(Node):
         if (front_m_pos[0] is not None and rear_m_pos[0] is not None):
             self._heading = np.arctan2(
                 front_m_pos[1] - rear_m_pos[1], front_m_pos[0] - rear_m_pos[0])
-            #  TODO: change to center of robot
             self._position = [rear_m_pos[0], rear_m_pos[1]]
             self._timestamp = timestamp
 
             self.data_updated_callback(
                 self._position, self._heading, self._timestamp)
-            # self._heading_controller(np.pi)  #  TODO: change to desired angle
             if self.__debug:
                 print('angle', np.rad2deg(self._heading))
 
         if self.__display_camera:
             cv.imshow('Terrain', self._terrain)
-            # cv.imwrite('terrain.png', self._terrain)
             cv.waitKey(1)
 
     def _detect_marker(self, hsv_min=(24, 1, 1), hsv_max=(51, 255, 255)):
+        """
+            Detects a single marker on the robot
+
+            :param hsv_min: minimum HSV value for the marker's color
+            :param hsv_max: maximum HSV value for the marker's color
+
+            :return:
+                (x, y) position of the marker in pixels;
+                (None, None) if no or multiple markers are detected
+        """
         frame_HSV = cv.cvtColor(self._terrain, cv.COLOR_BGR2HSV)
         frame_threshold = cv.inRange(frame_HSV, hsv_min, hsv_max)
         ret, thresh = cv.threshold(frame_threshold, 127, 255, cv.THRESH_BINARY)
@@ -98,9 +116,15 @@ class RobotDetector(Node):
             return (None, None)  # No marker / multiple markers found
 
     def get_heading(self):
+        """
+            Returns the robot heading in radians (0 = East, -pi/2 = North, +/-pi = West, pi/2 = North)
+        """
         return self._heading
 
     def get_position(self):
+        """
+            Returns the robot position (x, y) in pixels
+        """
         return self._position
 
 
@@ -111,6 +135,7 @@ def dummy_cb(position, heading, timestamp):
 def main(args=None):
     rclpy.init(args=args)
 
+    #  For testing / debugging purposes:
     rd = RobotDetector(dummy_cb, debug=True, display_camera=True)
     rd.Camera.destroy_node()
 

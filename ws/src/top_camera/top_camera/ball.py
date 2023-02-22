@@ -55,7 +55,7 @@ class TerrainBalls:
 
     def detect_balls(self, terrain):
         frame_HSV = cv.cvtColor(terrain, cv.COLOR_BGR2HSV)
-        frame_threshold = cv.inRange(frame_HSV, (30, 1, 1), (50, 255, 255))
+        frame_threshold = cv.inRange(frame_HSV, (16, 65, 90), (45, 255, 156))
         ret, thresh = cv.threshold(frame_threshold, 127, 255, cv.THRESH_BINARY)
         contours, h = cv.findContours(
             thresh, cv.RETR_CCOMP, cv.CHAIN_APPROX_NONE)
