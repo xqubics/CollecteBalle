@@ -7,7 +7,7 @@ from robot_detector import RobotDetector
 
 class RobotDetectorPublisher(Node):
     """
-        Publisher class for the detected robot position (Pose2D message) 
+        Publisher class for the detected robot position (Pose2D message)
         Position is detected by the robot_detector using the top_camera
     """
 

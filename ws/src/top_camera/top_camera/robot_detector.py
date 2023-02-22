@@ -88,8 +88,8 @@ class RobotDetector(Node):
             :param hsv_min: minimum HSV value for the marker's color
             :param hsv_max: maximum HSV value for the marker's color
 
-            :return: 
-                (x, y) position of the marker in pixels; 
+            :return:
+                (x, y) position of the marker in pixels;
                 (None, None) if no or multiple markers are detected
         """
         frame_HSV = cv.cvtColor(self._terrain, cv.COLOR_BGR2HSV)
