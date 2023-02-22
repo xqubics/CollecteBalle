@@ -68,6 +68,14 @@ class TerrainBalls:
                        1, (255, 255, 0), 1, cv.LINE_AA)
 
     def _find_match(self, ball, ball_centers):
+        """
+            Matches balls
+
+            :param ball: the ball to match
+            :param ball_centers: the list of ball centers
+
+            :return: the index of the closest ball center
+        """
 
         if len(ball_centers) == 0:
             return -1
