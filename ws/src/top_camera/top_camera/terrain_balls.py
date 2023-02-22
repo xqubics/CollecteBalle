@@ -5,6 +5,7 @@ from path_planner import PathPlanner
 from ball import Ball
 from rclpy.executors import MultiThreadedExecutor, SingleThreadedExecutor
 from threading import Thread
+from geometry_msgs.msg import Pose2D
 
 
 def spin_srv(executor):
@@ -14,17 +15,19 @@ def spin_srv(executor):
         pass
 
 
-class TerrainBalls:
+class TerrainBalls(Node):
     def __init__(self, timeStamp, display_camera=False, is_manual_launch=False):
+        super().__init__('terrain_balls')
         self.time = timeStamp
         self.display_camera = display_camera
         self.score = 0
         self.terrain = None
         self.balls = []
         self.nb_balls = 0
+        self.robot_position = (0, 0)  #  in pixels, image reference frame
 
         if is_manual_launch:
-            rclpy.init()
+            # rclpy.init()
             self.Camera = ZenithCameraSubscriber(self._update)
             rclpy.spin(self.Camera)
         else:
@@ -35,6 +38,10 @@ class TerrainBalls:
             self.__srv_thread = Thread(target=spin_srv, args=(self.__srv_executor, ), daemon=True)
             self.__srv_thread.start()
         self.path_ = PathPlanner(self.Camera)
+
+        self._robot_pos_subscription = self.create_subscription(
+            Pose2D, 'robot/position', self._new_robot_position_received_callback, 10)
+        # self._robot_pos_subscription  # prevent unused variable warning
 
     def _detect_balls(self, terrain):
         """
@@ -121,8 +128,17 @@ class TerrainBalls:
             cv.waitKey(1)
 
     def __del__(self):
-        self.Camera.destroy_node()
+        # self.Camera.destroy_node()
         cv.destroyAllWindows()
+
+    def _new_robot_position_received_callback(self, msg):
+        """
+            Called when a new robot position is received
+
+            :param msg: the robot position (Pose2D) in pixel coordinates
+        """
+        self.path_.set_robot_position(msg.x, msg.y)
+        self.robot_position = (msg.x, msg.y)
 
     def _update(self, img, timeStamp):
         """
@@ -157,7 +173,9 @@ class TerrainBalls:
 
 def main(args=None):
 
+    rclpy.init(args=args)
     terrain_balls = TerrainBalls(0, display_camera=True, is_manual_launch=True)
+    rclpy.spin(terrain_balls)
     terrain_balls.Camera.destroy_node()
 
     rclpy.shutdown()

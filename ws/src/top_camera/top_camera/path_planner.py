@@ -19,6 +19,16 @@ class PathPlanner:
         self.path = []  # liste de la trajectoire à suivre pour ramener les balles
         self.ind = 0  # indice dans le path de la balle ciblée actuellement
         self.img = img
+        self.robot_position = np.array([0, 0])  # robot position en xy (pas pixels!)
+
+    def set_robot_position(self, x, y):
+        """
+            Sets the robot position
+
+            :param x: the x coordinate of the robot position [in pixels, image reference frame]
+            :param y: the y coordinate of the robot position [in pixels, image reference frame]
+        """
+        self.robot_position = self.pixel_to_xy(x, y)
 
     def pixel_to_xy(self, lin, col):
         X = np.array([lin, col])
@@ -32,8 +42,8 @@ class PathPlanner:
                      int(X[1] / self.scale + n / 2)])
         return X
 
-    def distance(x0, x1):
-        return np.sqrt((x0[0] + x1[0])**2 + (x0[1] + x1[1])**2)
+    def distance(self, x0, x1):
+        return np.sqrt((x0[0] - x1[0])**2 + (x0[1] - x1[1])**2)
 
     def path_planner(self, x, y):
         self.prev_pos = self.pos
@@ -74,8 +84,6 @@ class PathPlanner:
             self.path = np.concatenate(
                 (np.array([collect, self.pos.tolist(), passage]), self.path), axis=0).tolist()
 
-    # TO DELETE
-
     def click_event(self, event, x, y, flags, params):
         if event == cv.EVENT_LBUTTONDOWN:
             x_, y_ = self.pixel_to_xy(x, y)
@@ -84,7 +92,7 @@ class PathPlanner:
                 n, p, _ = self.img.shape
                 cv.circle(self.img, (x, y), 10, (0, 0, 255), 5)
                 cv.putText(self.img, str(len(self.path) - self.i + 1), (x, y),
-                           cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 1, cv2.LINE_AA)
+                           cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 1, cv.LINE_AA)
                 for i in range(len(self.path) - 1):
                     cv.line(self.img, self.xy_to_pixel(self.path[i][0], self.path[i][1]), self.xy_to_pixel(
                         self.path[i + 1][0], self.path[i + 1][1]), (255, 0, 0), 2)

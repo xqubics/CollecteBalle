@@ -80,7 +80,7 @@ class RobotDetector(Node):
         if (front_m_pos[0] is not None and rear_m_pos[0] is not None):
             self._heading = np.arctan2(
                 front_m_pos[1] - rear_m_pos[1], front_m_pos[0] - rear_m_pos[0])
-            self._position = [rear_m_pos[0], rear_m_pos[1]]
+            self._position = [front_m_pos[0], front_m_pos[1]]
             self._timestamp = timestamp
 
             self.data_updated_callback(
