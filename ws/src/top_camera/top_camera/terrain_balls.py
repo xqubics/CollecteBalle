@@ -24,7 +24,7 @@ class TerrainBalls(Node):
         self.terrain = None
         self.balls = []
         self.nb_balls = 0
-        self.robot_position = (0, 0)  #  in pixels, image reference frame
+        self.robot_position = (0, 0)  # in pixels, image reference frame
 
         if is_manual_launch:
             # rclpy.init()
