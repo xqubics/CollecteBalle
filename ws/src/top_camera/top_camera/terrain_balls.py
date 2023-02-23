@@ -80,8 +80,18 @@ class TerrainBalls(Node):
                     Ball(self.nb_balls, self.time, ball_centers[j]))
 
         # -- Path planning --
+        closest_ball_id = -1
+        closest_ball_dist = 9999999
         for b in self.balls:
+            distance = self.path_.distance(b.position, self.robot_position)
+            if distance < closest_ball_dist:
+                closest_ball_dist = distance
+                closest_ball_id = b.id
+
             b.set_time(self.time)
+
+        if closest_ball_id != -1:
+            b = self.balls[closest_ball_id - 1]
             # Line bug
             X = b.position
             X_ = self.path_.pixel_to_xy(X[0], X[1])
@@ -92,6 +102,9 @@ class TerrainBalls(Node):
 
             cv.putText(terrain, str(b.id), tuple(b.position), cv.FONT_HERSHEY_SIMPLEX,
                        1, (255, 255, 0), 1, cv.LINE_AA)
+
+            # print('path', self.path_.path)
+            # print('ball_to_get', self.path_.xy_to_pixel(*self.path_.path[-1]))
 
     def _find_match(self, ball, ball_centers):
         """
